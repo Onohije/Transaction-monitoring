@@ -1,0 +1,57 @@
+trigger:
+  branches:
+    include:
+      - main
+
+pr:
+  branches:
+    include:
+      - main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  pythonVersion: "3.12"
+  nodeVersion: "22.x"
+
+stages:
+  - stage: Validate
+    displayName: Validate application
+    jobs:
+      - job: Api
+        displayName: API tests
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: $(pythonVersion)
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r services/api/requirements.txt
+              pytest services/api/tests
+            displayName: Install API dependencies and run tests
+
+      - job: Web
+        displayName: Web build
+        steps:
+          - task: NodeTool@0
+            inputs:
+              versionSpec: $(nodeVersion)
+          - script: |
+              npm install
+              npm run build
+            workingDirectory: services/web
+            displayName: Install web dependencies and build
+
+  - stage: ContainerBuild
+    displayName: Build containers
+    dependsOn: Validate
+    jobs:
+      - job: DockerCompose
+        displayName: Docker Compose build
+        steps:
+          - script: docker compose config
+            displayName: Validate Compose file
+          - script: docker compose build
+            displayName: Build API and web images
+
