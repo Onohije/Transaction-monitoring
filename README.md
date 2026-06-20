@@ -27,6 +27,14 @@ Every transaction update creates a status history row and an audit log row.
 
 ## Quick Start
 
+Create your local environment file first:
+
+```bash
+cp .env.example .env
+```
+
+Update `POSTGRES_PASSWORD` and `DATABASE_URL` in `.env` if you want a different local database password.
+
 ```bash
 docker compose up --build
 ```

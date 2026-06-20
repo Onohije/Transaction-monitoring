@@ -34,6 +34,18 @@ docker compose version
 From the project root, run:
 
 ```bash
+cp .env.example .env
+```
+
+For PowerShell:
+
+```powershell
+Copy-Item .env.example .env
+```
+
+Then start the stack:
+
+```bash
 docker compose up --build
 ```
 
@@ -256,4 +268,3 @@ Default alert settings:
 
 - `FAILED_TX_THRESHOLD=5`
 - `FAILED_TX_WINDOW_SECONDS=300`
-
