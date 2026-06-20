@@ -27,8 +27,9 @@ stages:
               versionSpec: $(pythonVersion)
           - script: |
               python -m pip install --upgrade pip
-              pip install -r services/api/requirements.txt
-              pytest services/api/tests
+              pip install -r requirements.txt
+              pytest tests
+            workingDirectory: services/api
             displayName: Install API dependencies and run tests
 
       - job: Web
@@ -54,4 +55,3 @@ stages:
             displayName: Validate Compose file
           - script: docker compose build
             displayName: Build API and web images
-
