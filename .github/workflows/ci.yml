@@ -16,7 +16,7 @@ jobs:
       - working-directory: services/api
         run: pip install -r requirements.txt
       - working-directory: services/api
-        run: pytest tests
+        run: python -m pytest
 
   web:
     runs-on: ubuntu-latest
